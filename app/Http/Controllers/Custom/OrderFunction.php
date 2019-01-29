@@ -19,7 +19,7 @@ class OrderFunction {
                 ->where('created_at', '<=', \Carbon\Carbon::tomorrow())
                 ->count();
 
-        for($i = strlen($orderheader_count+1); $i < 4; $i++){
+        for($i = strlen($orderheader_count+1); $i < 3; $i++){
             $invoice_number_end .= '0';
         }
 

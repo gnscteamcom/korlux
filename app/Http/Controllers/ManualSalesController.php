@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ShipmentApi;
 use App\Http\Controllers\Custom\PriceFunction;
 use App\Http\Controllers\Custom\StockBalanceFunction;
 use App\Product;
+use App\Bank;
 use Cart;
 use App\User;
 use App\Orderheader;
@@ -147,7 +148,7 @@ class ManualSalesController extends Controller {
         $user_id = auth()->user()->id;
         $total_weight = $request['total_weight'];
         $marketplace_invoice = $cart_data->options->marketplace_invoice;
-        
+
         $invoice_number = Custom\OrderFunction::setInvoiceNumber($cart_data->options->inisial);
         $nominal_unik = $cart_data->options->nominal_unik;
         if(!$nominal_unik){
@@ -178,14 +179,14 @@ class ManualSalesController extends Controller {
         $order_header->dropship_id = 0;
         $order_header->note = $cart_data->options->note;
         $order_header->barcode = Custom\OrderFunction::setBarcode($invoice_number);
-        
+
         #set redirect link ke manualsales
         $link = 'manualsales';
         #cek apakah harus konfirmasi pembayaran
         if ($cart_data->options->link_pembayaran) {
             #kalau ada link_pembayaran redirect ke chatsales
             $link = 'chatsales';
-            
+
             #buat link pembayaran random
             $random_string = $order_header->invoicenumber . str_random(5);
             $order_header->payment_link = $random_string;
@@ -233,7 +234,7 @@ class ManualSalesController extends Controller {
             if(!$gunakan_stok){
                 $gunakan_stok = 1;
             }
-            
+
             if($gunakan_stok == 1){
                 #Kalau gunakan stok utama
                 #potong stok utama dulu, kalau tidak cukup, potong stok cadangan
@@ -241,7 +242,7 @@ class ManualSalesController extends Controller {
                 if($product->qty - $order_detail->qty < 0){
                     #save ke history pemotongan stok cadangan
                     StockFunction::saveReservedStockHistory($product->reserved_qty, $order_detail->qty - $product->qty, $order_header->id);
-                    
+
                     $product->reserved_qty = $product->reserved_qty - ($order_detail->qty - $product->qty);
                     StockBalanceFunction::addBalance($product->id, 0, $product->qty, 0, "Manual Sales stok utama: " . $order_header->invoicenumber);
                     $product->qty = 0;
@@ -256,14 +257,14 @@ class ManualSalesController extends Controller {
                 if($product->reserved_qty - $order_detail->qty < 0){
                     #save ke history pemotongan stok cadangan
                     StockFunction::saveReservedStockHistory($product->reserved_qty, $product->reserved_qty, $order_header->id);
-                    
+
                     $product->qty = $product->qty - ($order_detail->qty - $product->reserved_qty);
                     StockBalanceFunction::addBalance($product->id, 0, $order_detail->qty - $product->reserved_qty, 0, "Manual Sales stok utama: " . $order_header->invoicenumber);
                     $product->reserved_qty = 0;
                 }else{
                     #save ke history pemotongan stok cadangan
                     StockFunction::saveReservedStockHistory($product->reserved_qty, $order_detail->qty, $order_header->id);
-                    
+
                     $product->reserved_qty -= $order_detail->qty;
                 }
                 $product->save();
@@ -345,11 +346,11 @@ class ManualSalesController extends Controller {
             Cart::instance('manualsalesdata')->destroy();
             Cart::instance('manualsalescart')->destroy();
 
-            
+
             #Message untuk manual sales
             $message = "Nomor order : " . $order_header->invoicenumber . "<br>"
                     . "Total belanja : Rp. " . number_format($total_paid, 0, ',', '.') . "<br>";
-                    
+
             $banks = Bank::get();
 
             #Message hanya untuk chat sales
@@ -369,7 +370,7 @@ class ManualSalesController extends Controller {
                             . "Mohon lakukan konfirmasi pembayaran dalam 24 jam, atau orderan kakak akan batal otomatis dan barang yang kakak pesan tidak terjamin ketersediaannya.<br>";
                 }
             }
-            
+
             #kalau ada input invoice marketplace
             if(strlen($marketplace_invoice) > 0){
                 $order_marketplace = new Ordermarketplace;
@@ -399,7 +400,7 @@ class ManualSalesController extends Controller {
             $user = User::find($user_id);
             $status_id = $user->usersetting->status_id;
         }
-        
+
         $product = Product::find($request['product']);
         $price = PriceFunction::getPriceByStatus($product->currentprice_id, $status_id);
         if ($product->currentprice->sale_price > 0 && $product->currentprice->sale_price < $price) {
@@ -419,7 +420,7 @@ class ManualSalesController extends Controller {
         if ($product->productclasses->count() > 0) {
             $discountqty_id = $product->productclasses->first()->discountqty_id;
         }
-        
+
         $gunakan_stok = $request->gunakan_stok;
         if(!$gunakan_stok){
             $gunakan_stok = 1;
@@ -430,7 +431,7 @@ class ManualSalesController extends Controller {
             'discountqty_id' => $discountqty_id,
             'gunakan_stok' => $gunakan_stok
         ));
-        
+
         #update harga grosir
         $price = OrderFunction::updateWholesalePrice($discountqty_id, $product->id, 'manualsalescart', 1, $price);
 
@@ -501,6 +502,6 @@ class ManualSalesController extends Controller {
                     'orderheaders' => $orders
         ));
     }
-    
+
 
 }
