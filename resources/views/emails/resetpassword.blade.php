@@ -1,0 +1,1 @@
+Anda mengajukan reset password. Password Anda saat ini adalah  : {{ $current_password }}

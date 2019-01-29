@@ -1,0 +1,27 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jul 19, 2017, 6:43:08 AM
+    Author     : Irwan
+*/
+
+.float{
+	position:fixed;
+	width:60px;
+	height:60px;
+	bottom:160px;
+	left:40px;
+	background-color:#0C9;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+	box-shadow: 2px 2px 3px #999;
+        z-index: 9999;
+}
+
+.my-float{
+	margin-top:22px;
+}
