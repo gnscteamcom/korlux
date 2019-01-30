@@ -19,7 +19,7 @@
 }
 
 .link-chat {
-	background: #D65C85 !important;
+	background: #353535 !important;
 	z-index: 0;
 }
 
@@ -40,5 +40,5 @@
 
 .tooltip-inner {
   max-width: 350px;
-  width: 350px; 
+  width: 350px;
 }

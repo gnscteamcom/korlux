@@ -36,11 +36,11 @@
                             <option value="most_buy">Terlaris</option>
                         </select>
                     </div>
-                </div>              
+                </div>
             </div>
           </div>
           <div class="row products col-md-12" id="product_list">
-              <?php 
+              <?php
                 $i = 0;
                 $loop = 0;
               ?>
@@ -56,7 +56,7 @@
                     <div class="col-lg-1 col-md-1 col-sm-1"></div>
                 @endif
                 <div class="col-md-2 col-sm-6 col-xs-6 ">
-                  <div class="product"> 
+                  <div class="product">
                     <div class="image">
                         @if($product->qty <= 0)
                             <div class="ribbon ribbon-quick-view sale">
@@ -97,7 +97,7 @@
                       <p class="brand margin-0">
                           <a href="#" data-toggle="modal" data-target="{{ '#' . $product->id }}">{!! $product->brand->brand !!}</a>
                       </p>
-                      <p  class="margin-0"> 
+                      <p  class="margin-0">
                         <strong>
                           <!-- <a href="#" data-toggle="modal" data-target="{{ '#' . $product->id }}" class="product-name">{!! $product->product_name !!}</a> -->
                           <a style="font-size:12px;" href="#" data-toggle="modal" data-target="{{ '#' . $product->id }}" class="product-name">{!! substr($product->product_name, 0, 75) !!}</a>
@@ -174,7 +174,7 @@
                                 @if($price > 0 && $product->qty > 0)
                                 <form method="post" action="#" class="addToCart" data-product-id="{{ $product->id }}">
                                 @endif
-                                    
+
                                     <input type="hidden" value="{{ $product->id }}" name="product_id"/>
                                     <input type="hidden" value="{{ $price }}" name="price"/>
                                     @if($product->currentprice != null && $product->currentprice->sale_price > 0)
@@ -221,14 +221,14 @@
                 </div>
                 @endforeach
           </div>
-                
+
             <div id="continue-shop-modal" tabindex="-1" role="dialog" aria-hidden="false" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-body">
                             <div class="row quick-view product-main">
                                 <div class="col-sm-12">
-                                    <p class="product__heading text-center" id="product_cart" style="color: #d75b86;"></p>
+                                    <p class="product__heading text-center" id="product_cart" style="color: #353535;"></p>
                                     <div class="box">
                                         <div class="row margin-top-20">
                                             <div class="col-md-7 col-md-offset-3">
@@ -248,8 +248,8 @@
                     </div>
                 </div>
             </div>
-                
-                
+
+
             <div class="pages">
                 <input type="hidden" name="brand_id" id="brand_id" value="{{ $brand }}" />
                 <input type="hidden" name="category_id" id="category_id" value="{{ $category }}" />
@@ -259,7 +259,7 @@
                 <input type="hidden" name="page_number" id="page_number" value="1" />
                 <p class="loadMore"><button type="button" class="btn btn-primary" id="loadMore" data-load-item="123"><i class="fa fa-chevron-down"></i> Tampilkan Lebih Banyak</button></p>
             </div>
-            
+
         </div>
       </div>
     </div>

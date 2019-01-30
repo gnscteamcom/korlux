@@ -577,7 +577,7 @@
                 <div class="modal-body">
                     <div class="row quick-view product-main">
                         <div class="col-sm-12">
-                            <p class="product__heading text-center" id="product_cart" style="color: #d75b86;"></p>
+                            <p class="product__heading text-center" id="product_cart" style="color: #353535;"></p>
                             <div class="box">
                                 <div class="row margin-top-20">
                                     <div class="col-md-7 col-md-offset-3">
