@@ -13,7 +13,7 @@ use PDF;
 
 
 class ReportController extends Controller {
-    
+
     #SET BARCODE STYLE
     private static $barcode_style = array(
         'position' => '',
@@ -29,17 +29,17 @@ class ReportController extends Controller {
     );
 
     public function viewFilterReport(){
-        
+
         return view('pages.admin-side.modules.report.viewfilterreport');
-        
+
     }
-    
-    
+
+
     public function generateReport(Request $request){
-        
+
         $filter_by = $request['filter_by'];
-        
-        
+
+
         if($filter_by == 1){
             $this->generateSalesReport($request['date_start'], $request['date_end']);
         }
@@ -58,51 +58,51 @@ class ReportController extends Controller {
         else if($filter_by == 6){
             $this->generateCurrentStockValueReport();
         }
-        
-    }    
-    
-    
-    
+
+    }
+
+
+
     public function PrintDO(Request $request){
-        
+
         $this->validate($request, [
             'print' => 'required'
         ]);
-        
+
         //Generate Judul Page
         PDF::SetPageOrientation('L', true, 20);
         PDF::SetMargins(0, 0, 0, true);
         PDF::SetTitle('DO');
-        
-        
+
+
         $i = 1;
         $invoice = "<br />&nbsp;&nbsp;&nbsp;Order yang sudah diprint <br /><br />";
 
         $print_arrays = $request['print'];
         sort($print_arrays);
-        
+
         foreach(array_chunk($print_arrays, 4) as $four_array){
             PDF::AddPage();
 
             //Generate isi report
-            $tbl = 
+            $tbl =
                     '<table cellspacing="20">'
                     . '<tr>'
                         . '<td>';
-                
+
             foreach(array_chunk($four_array, 2) as $two_array){
                 $tbl2 = '<table style="width:100%;">'
                         . '<tr>';
-                
+
                 foreach($two_array as $order_id){
-                    
+
                     $tbl2 .= '<td style="width:50%;">';
-            
+
                     //Ambil data
                     $order_header = Orderheader::find($order_id);
                     $tbl2 .= $this->generateTableInvoice($order_header, $i++);
                     $tbl2 .= '</td>';
-                                        
+
                     #Simpan nomor invoicenumber buat ditampilkan di terakhir.
                     $invoice .= '&nbsp;&nbsp;&nbsp;' . $order_header->invoicenumber . '<br />';
                 }
@@ -126,20 +126,20 @@ class ReportController extends Controller {
 
         //Close dan tampilkan hasilnya
         PDF::Output('PrintDO.pdf');
-        
-        
+
+
     }
-    
-    
-    
+
+
+
     public function printAllShippedDO(Request $request){
-        
+
 
         //Generate Judul Page
         PDF::SetPageOrientation('L', true, 20);
         PDF::SetMargins(0, 0, 0, true);
         PDF::SetTitle('DO');
-        
+
         #SET BARCODE STYLE
         $barcode_style = array(
             'position' => '',
@@ -153,8 +153,8 @@ class ReportController extends Controller {
             'bgcolor' => false, //array(255,255,255),
             'stretchtext' => 4
         );
-        
-        
+
+
         $i = 1;
         $counter = 1;
         $invoice = "<br />&nbsp;&nbsp;&nbsp;Order yang sudah diprint <br /><br />";
@@ -163,28 +163,28 @@ class ReportController extends Controller {
                 ->whereNull('shipment_invoice')
                 ->orderBy('created_at')
                 ->get();
-        
+
         foreach($orderheaders->chunk(4) as $order_header_chunk){
             PDF::AddPage();
 
             //Generate isi report
-            $tbl = 
+            $tbl =
                     '<table cellspacing="20">'
                     . '<tr>'
                         . '<td>';
-            
+
             foreach($order_header_chunk->chunk(2) as $order_header_chunk_two){
                 $tbl2 = '<table style="width:100%;">'
                         . '<tr>';
-                
+
                 foreach($order_header_chunk_two as $order_header){
-                    
+
                     $tbl2 .= '<td style="width:50%;">';
-            
+
                     //Ambil data
                     $tbl2 .= $this->generateTableInvoice($order_header, $i++);
                     $tbl2 .= '</td>';
-                                        
+
                     #Simpan nomor invoicenumber buat ditampilkan di terakhir.
                     $invoice .= '&nbsp;&nbsp;&nbsp;' . $order_header->invoicenumber . '<br />';
                 }
@@ -208,10 +208,10 @@ class ReportController extends Controller {
 
         //Close dan tampilkan hasilnya
         PDF::Output('PrintDO.pdf');
-        
-        
+
+
     }
-    
+
     private static function generateTableInvoice($order_header, $i) {
         $tbl2 = '';
         if (!$order_header->shipment_invoice) {
@@ -304,10 +304,10 @@ class ReportController extends Controller {
             #BIKIN BARCODE
             if (strlen($order_header->barcode) > 0) {
                 $barcode_y_position = PDF::getY();
-                PDF::write1DBarcode($order_header->barcode, 'C128', 2 + ( 165 * ($i % 2 == 0 ? 1 : 0) ), 3 + $barcode_y_position, '', 14, 0.4, ReportController::$barcode_style, 1);
+                PDF::write1DBarcode($order_header->barcode, 'C128', 2 + ( 148 * ($i % 2 == 0 ? 1 : 0) ), 3 + $barcode_y_position, '', 14, 0.4, ReportController::$barcode_style, 1);
                 PDF::SetAutoPageBreak(TRUE, 0);
             }
-            
+
             #CEK apakah ada invoice marketplace
             $marketplace_invoice = '';
             if($order_header->ordermarketplace){
@@ -372,7 +372,7 @@ class ReportController extends Controller {
                         . '</td>'
                         . '</tr>';
             }
-            
+
             $tbl2 = $tbl2 . '</table>'
                     . '</td>'
                     . '<td width="59%" style="border:.1px dashed #757575; vertical-align:top; padding:10px;">'
@@ -434,7 +434,7 @@ class ReportController extends Controller {
             $order_header->is_print = 1;
             $order_header->save();
         }
-        
+
         return $tbl2;
     }
 
