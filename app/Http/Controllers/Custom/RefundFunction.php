@@ -46,7 +46,7 @@ class RefundFunction {
                     . "Nominal : Rp. " . number_format($refund_request->total_refund, 0, ',', '.') . "\r\n"
                     . "Berlaku sampai : " . date('d F Y', strtotime($expired_date)) . "\r\n\r\n"
                     . "Keterangan: [" . $refund_request->refund_reason . "]\r\n\r\n"
-                    . "jika menginginkan bukti refund atau ada pertanyaaan lebih lanjut, silahkan hubungi koreanluxuryshop@gmail.com dengan menyertakan nomor order anda.";
+                    . "jika menginginkan bukti refund atau ada pertanyaaan lebih lanjut, silahkan hubungi yeppeneshop@gmail.com dengan menyertakan nomor order anda.";
 
             $subject = "REFUND " . $refund_request->order->invoicenumber . " TELAH DIPROSES";
         }
@@ -60,7 +60,7 @@ class RefundFunction {
                 . "*) Selain bank BCA, MANDIRI, BNI akan dikenakan admin bank sebesar Rp 6,500 yang dipotong langsung dari jumlah refund\r\n"
                 . "*) khusus untuk BRI akan dikenakan admin bank sebesar Rp 750 yang dipotong langsung dari jumlah refund.\r\n\r\n"
                 . "Keterangan: [" . $refund_request->refund_reason . "]\r\n\r\n"
-                . "jika menginginkan bukti refund atau ada pertanyaaan lebih lanjut, silahkan hubungi koreanluxuryshop@gmail.com dengan menyertakan nomor order anda.";
+                . "jika menginginkan bukti refund atau ada pertanyaaan lebih lanjut, silahkan hubungi yeppeneshop@gmail.com dengan menyertakan nomor order anda.";
 
             $subject = "REFUND " . $refund_request->order->invoicenumber . " SEDANG DIPROSES";
         }
@@ -70,7 +70,7 @@ class RefundFunction {
 
     public static function sendRefundRejectEmail($refund_request, $email_destination) {
         $email_message = "Pengajuan refund : " . $refund_request->order->invoicenumber . " sebesar Rp. " . number_format($refund_request->total_refund, 2, ',', '.') . ' DITOLAK.\r\nDengan alasan : ' . $refund_request->reject_reason . '.\r\n'
-                . 'Jika ada pertanyaan lebih lanjut, silahkan hubungi koreanluxuryshop@gmail.com dengan menyertakan nomor order anda.';
+                . 'Jika ada pertanyaan lebih lanjut, silahkan hubungi yeppeneshop@gmail.com dengan menyertakan nomor order anda.';
 
         $subject = "REFUND " . $refund_request->order->invoicenumber . " DITOLAK";
 
@@ -80,7 +80,7 @@ class RefundFunction {
     public static function sendEmail($email_message, $subject) {
         Mail::raw($email_message, function ($message) use ($subject) {
             $message->from('noreply@koreanluxury.com', 'Koreanluxury');
-            $message->to('koreanluxuryshop@gmail.com', $name = null);
+            $message->to('yeppeneshop@gmail.com', $name = null);
             $message->replyTo('noreply@koreanluxury.com', 'Koreanluxury');
             $message->subject('[Koreanluxury] ' . $subject . ' - Jangan Dibalas !!');
         });
