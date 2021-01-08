@@ -9,15 +9,15 @@
         <meta name="robots" content="all,follow">
         <!-- Bootstrap and Font Awesome css-->
         <!-- we use cdn but you can also include local files located in css directory-->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{{ URL::asset('ext/css/faw-web/css/all.min.css') }}">
+        <link rel="stylesheet" href="{{ URL::asset('ext/css/bootstrap-3.3.5/bootstrap.css') }}">
         <!-- Google fonts - Montserrat for headings, Raleway for copy-->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,700">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
         <!-- owl carousel-->
         <link rel="stylesheet" href="{{ URL::asset('ext/css/front-end/style.default.css?3') }}">
-        <link rel="stylesheet" href="{{ URL::asset('ext/css/front-end/r-style.css?2') }}">
-        <link rel="stylesheet" href="{{ URL::asset('ext/css/front-end/plugschat.css?3') }}">
+        <link rel="stylesheet" href="{{ URL::asset('ext/css/front-end/r-style.css?3') }}">
+        <link rel="stylesheet" href="{{ URL::asset('ext/css/front-end/plugschat.css?4') }}">
         <link rel="stylesheet" href="{{ URL::asset('ext/css/t2o-color.css') }}">
         <link rel="stylesheet" href="{{ URL::asset('ext/css/t2o-default.css') }}">
         <link rel="stylesheet" href="{{ URL::asset('ext/css/custom/menu.css') }}">
@@ -39,7 +39,10 @@
     <body id="home">
         <div id="top-header" style="margin-top:120px; display:none;"></div>
 
-        <a href="#0" class="cd-top">Top</a>
+        <a href="#0" class="cd-top">
+          <i class="fa fa-caret-up"></i>
+          Top
+        </a>
 
         @include('includes.front-end.header')
 
@@ -54,7 +57,8 @@
 
 
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" ></script>
+        <script type="text/javascript" src="{{ URL::asset('ext/js/bootstrap-3.3.5/bootstrap.js') }}"></script>
+        <script type="text/javascript" src="{{ URL::asset('ext/css/faw-web/js/all.min.js' )}}" ></script>
         <script type="text/javascript" src="{{ URL::asset('ext/js/front-end/placeholders.min.js') }}"></script>
 
         <script type="text/javascript" src="{{ URL::asset('ext/js/front-end/jquery.scrollTo.min.js') }}" ></script>

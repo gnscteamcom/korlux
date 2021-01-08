@@ -195,7 +195,7 @@
                                                 <div class="col-md-7 col-md-offset-3">
                                                     <div class="form-group">
                                                         <label for="qty">Quantity (Stok : {{ $most_buy_product->qty }} barang)</label>
-                                                        <input type="number" value="1" min="1" name="qty" max="{{ $most_buy_product->qty }}" id="qty" name="qty" class="form-control" required="required">
+                                                        <input type="number" value="1" min="1" name="qty" max="{{ $most_buy_product->qty }}" name="qty" class="form-control" required="required">
                                                     </div>
                                                 </div>
                                             </div>
@@ -370,7 +370,7 @@
                                                 <div class="col-md-7 col-md-offset-3">
                                                     <div class="form-group">
                                                         <label for="qty">Quantity (Stok : {{ $new_product->qty }} barang)</label>
-                                                        <input type="number" value="1" min="1" name="qty" max="{{ $new_product->qty }}" id="qty" name="qty" class="form-control" required="required">
+                                                        <input type="number" value="1" min="1" name="qty" max="{{ $new_product->qty }}" name="qty" class="form-control" required="required">
                                                     </div>
                                                 </div>
                                             </div>
@@ -545,7 +545,7 @@
                                                 <div class="col-md-7 col-md-offset-3">
                                                     <div class="form-group">
                                                         <label for="qty">Quantity (Stok : {{ $new_stock->qty }} barang)</label>
-                                                        <input type="number" value="1" min="1" name="qty" max="{{ $new_stock->qty }}" id="qty" name="qty" class="form-control" required="required">
+                                                        <input type="number" value="1" min="1" name="qty" max="{{ $new_stock->qty }}" name="qty" class="form-control" required="required">
                                                     </div>
                                                 </div>
                                             </div>

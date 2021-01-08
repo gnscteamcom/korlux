@@ -1,9 +1,9 @@
-/* 
- * 
+/*
+ *
  * Licensed v.1.0 Team2One
  * All Source Code belongs to Team2One
  * Revised Date : 13 July 2016
- * 
+ *
  */
 
 
@@ -19,7 +19,7 @@ if(is_user === "1"){
         $('#div-conv').show();
         //retrieveEmailAndName();
     });
-    
+
 }
 //ini bagian khusus yang owner
 else if(is_user === "0"){
@@ -29,15 +29,15 @@ else if(is_user === "0"){
 
     //set per interval untuk refresh list user
 //    setInterval(function(){
-//        refreshUserList();   
+//        refreshUserList();
 //    }, intervalTime*3);
-    
+
 }
 
 //send message kalau dienter
 $('#chats').keyup(function(event){
     var keyCode = (event.keyCode ? event.keyCode : event.which);
-    
+
     if(keyCode === 13){
         //kirim chat kalau di-enter
         sendChats();
@@ -47,7 +47,7 @@ $('#chats').keyup(function(event){
 //cari chat kalau dienter
 $('#search').keyup(function(event){
     var keyCode = (event.keyCode ? event.keyCode : event.which);
-    
+
     if(keyCode === 13){
         //cari chat kalau di-enter
         searchChats();
@@ -75,7 +75,7 @@ $('#send_chats').click(function(){
 $('#btn_proceed').click(function(){
     var email_chat = $('#email_chat').val();
     var name_chat = $('#name_chat').val();
-    
+
     setInitialEmailAndName(email_chat, name_chat);
 });
 
@@ -131,7 +131,7 @@ function retrieveEmailAndName(){
 function setInitialEmailAndName(email_chat, name_chat){
     var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     beforeLogin();
-    
+
     //validasi email
     if(!regex.test(email_chat)){
         alert("Format Email salah");
@@ -154,7 +154,7 @@ function setInitialEmailAndName(email_chat, name_chat){
                 //setelah selesai set session..
                 $('#started_email').val(data.started_email);
                 $('#sender_name').val(data.sender_name);
-                
+
                 //tampilin chat box
                 afterLogin();
                 retrieveConversation(data.started_email);
@@ -223,10 +223,10 @@ function retrieveConversation(started_email){
 
 //fungsi untuk menampilkan chat pertama kali
 function revealChat(conversation_id) {
-    
+
     clearChat();
     $('#conversation_id').val(conversation_id);
-    
+
     //ajax buat grab conversation aktif
     $.post(
         "chatapi/initialconversation",
@@ -430,7 +430,7 @@ function refreshChat(){
 
             }
         );
-        
+
     }, intervalTime);
 }
 
