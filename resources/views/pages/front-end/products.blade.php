@@ -207,7 +207,7 @@
                                         @if($price > 0 && $product->qty > 0)
                                         <button type="submit" class="btn btn-primary margin-top-10 col-xs-12 col-md-5 pull-right"><i class="fa fa-shopping-cart"></i>&nbsp;Tambahkan</button>
                                         @endif
-                                        <button type="button" class="btn btn-default margin-top-10 col-xs-12 col-md-5 pull-left" data-dismiss="modal"><i class="fa fa-remove"></i>&nbsp;Tutup</button>
+                                        <button type="button" class="btn btn-default margin-top-10 col-xs-12 col-md-5 pull-left" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Tutup</button>
                                     </p>
                                 @if($price > 0 && $product->qty > 0)
                                 </form>
@@ -238,7 +238,7 @@
                                             </div>
                                         </div>
                                         <p class="text-center margin-bottom-80">
-                                            <a href="{{ url('cart') }}" class="btn btn-primary margin-top-10 col-xs-12 col-md-5 pull-right"><i class="fa fa-money"></i>&nbsp;Bayar</a>
+                                            <a href="{{ url('cart') }}" class="btn btn-primary margin-top-10 col-xs-12 col-md-5 pull-right"><i class="fa fa-money-bill-alt"></i>&nbsp;Bayar</a>
                                             <a href="#" class="btn btn-default margin-top-10 col-xs-12 col-md-5 pull-left" data-dismiss="modal"><i class="fa fa-shopping-cart"></i>&nbsp;Lanjut Belanja</a>
                                         </p>
                                     </div>

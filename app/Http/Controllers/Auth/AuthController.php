@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use Validator;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Custom\UserFunction;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Http\Request;
 use Cart;
 use App\Priceprocess;
 use App\Product;
 use App\Usersetting;
+use App\ResellerConfig;
 use Hash;
 use Auth;
 
@@ -69,37 +71,37 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
-    
-    
+
+
     public function doLogin(Request $request){
-        
+
         $this->validate($request, [
             'username' => 'required',
             'password' => 'required|min:8|max:64'
         ]);
-        
-            
+
+
         //login...
         if(auth()->attempt([
                 'username' => $request->input('username'),
                 'password' => $request->input('password')
             ])){
-            
+
             $user = auth()->user();
-            
+
             //update stok dari product paket
             if($user->is_owner || $user->is_marketing || $user->is_warehouse || $user->is_finance){
                 $this->updateProductSetQty();
             }
-            
+
             //update harga harian
             $this->processCurrentPrice();
-            
+
             if(!$user->is_admin){
                 $this->processReseller($user);
                 return redirect('home');
             }
-            
+
             if($user->is_owner){
                 return redirect('vieworder');
             }else{
@@ -110,16 +112,16 @@ class AuthController extends Controller
                     return redirect('http://koreanluxury.com');
                 }
             }
-            
+
         }
         else{
 
             return back()->withErrors(array('password' => 'User atau password salah'))->withInput($request->except('password'));
 
         }
-            
+
     }
-    
+
     public function doLoginFB(Request $request) {
         $email = $request->data['email'];
         $fb_id = $request->data['id'];
@@ -131,7 +133,7 @@ class AuthController extends Controller
             $user_setting = Usersetting::where('email', 'like', $email)
                     ->first();
         }
-        
+
         #kalau belum ada berarti belum terdaftar
         if (!$user_setting) {
             $user = new User;
@@ -197,22 +199,22 @@ class AuthController extends Controller
                 'link' => url('viewpayment')
             ];
         }
-        
+
         if(strlen($user->usersetting->kecamatan) > 0){
             return [
                 'link' => url('home')
             ];
         }
-        
+
         return [
             'link' => url('profile')
         ];
 
     }
-    
-    
+
+
     public function doLogout(){
-        
+
         //hapus cart juga
         Cart::instance('main')->destroy();
         Cart::instance('shipcost')->destroy();
@@ -221,24 +223,199 @@ class AuthController extends Controller
         Cart::instance('insurancecost')->destroy();
         Cart::instance('unique')->destroy();
         Cart::instance('packingfee')->destroy();
-        
+
         Cart::instance('manualsalesdata')->destroy();
         Cart::instance('manualsalescart')->destroy();
-        
+
         //logout dan hapus authentication
         auth()->logout();
         return redirect('home');
-        
-    }
-    
-    
-    private function processReseller($user){
 
+    }
+
+
+    private function processReseller($user){
+      $usersetting = $user->usersetting;
+      $resellerconfig = ResellerConfig::first();
+
+      $upgrade_days = 0;
+      $downgrade_days = 0;
+      $upgrade_nominal = 0;
+      $downgrade_nominal = 0;
+      $status_upgrade = 1;
+      $status_downgrade = 1;
+
+      switch($usersetting->status_id) {
+        case 1:
+          $upgrade_days = $resellerconfig->silver_upgrade_days;
+          $downgrade_days = 0;
+          $upgrade_nominal = $resellerconfig->silver_min_upgrade;
+          $downgrade_nominal = 0;
+          $status_upgrade = 2;
+          $status_downgrade = 1;
+          break;
+        case 2:
+          $upgrade_days = $resellerconfig->gold_upgrade_days;
+          $downgrade_days = $resellerconfig->silver_downgrade_days;
+          $upgrade_nominal = $resellerconfig->gold_min_upgrade;
+          $downgrade_nominal = $resellerconfig->silver_min_downgrade;
+          $status_upgrade = 3;
+          $status_downgrade = 1;
+          break;
+        case 3:
+          $upgrade_days = $resellerconfig->platinum_upgrade_days;
+          $downgrade_days = $resellerconfig->gold_downgrade_days;
+          $upgrade_nominal = $resellerconfig->platinum_min_upgrade;
+          $downgrade_nominal = $resellerconfig->gold_min_downgrade;
+          $status_upgrade = 3;
+          $status_downgrade = 2;
+          break;
+        case 4:
+          $upgrade_days = 0;
+          $downgrade_days = $resellerconfig->platinum_downgrade_days;
+          $upgrade_nominal = 0;
+          $downgrade_nominal = $resellerconfig->platinum_min_downgrade;
+          $status_upgrade = 4;
+          $status_downgrade = 3;
+          break;
+        default:
+            break;
+      }
+
+
+      //UPGRADE
+      $subject = "";
+      $email_message = "";
+      if($upgrade_days > 0) {
+        $grand_total = UserFunction::getShopValue($upgrade_days, 0, $user->id);
+
+        if($grand_total >= $upgrade_nominal) {
+          //update user status
+          $usersetting->status_id = $status_upgrade;
+
+          switch ($status_upgrade) {
+            case 4:
+              $subject = 'Selamat!! kamu sudah menjadi PLATINUM Reseller';
+              $email_message = "SELAMAT!!!!\r\n\r\n"
+                      . "Karena sudah mencapai target pembelian, Anda telah menjadi PLATINUM reseller. Harga yang tertera di http://www.koreanluxury.com akan lebih murah dari harga sebelumnya..\r\n\r\n"
+                      . "PLATINUM RESELLER adalah tingkat reseller teringgi. Untuk informasi yang berkaitan dengan reseller, silahkan klik: http://www.koreanluxury.com/reseller \r\n\r\n"
+                      . "Jika BELUM PERNAH melakukan pendaftaran reseller via email, mohon segera lakukan pendaftaran untuk mendapatkan pricelist reseller, dan info-info lainnya. Kirim email ke: yeppeneshop@gmail.com \r\n\r\n"
+                      . "Subject: pendaftaran reseller langsung\r\n"
+                      . "Isi email:\r\n\r\n"
+                      . "username: (tulis email jika pendaftaran melalui facebook)\r\n"
+                      . "Nama lengkap OWNER:\r\n"
+                      . "Nama OLSHOP:\r\n"
+                      . "Nomer handphone:\r\n"
+                      . "Line ID:\r\n"
+                      . "Instagram:\r\n\r\n"
+                      . "Best Regards,\r\n"
+                      . "www.koreanluxury.com\r\n";
+              break;
+            case 3:
+              $subject = 'Selamat!! kamu sudah menjadi GOLD Reseller';
+              $email_message = "SELAMAT!!!!\r\n\r\n"
+                      . "Karena sudah mencapai target pembelian, Anda telah menjadi GOLD reseller. Harga yang tertera di http://www.koreanluxury.com akan lebih murah dari harga sebelumnya..\r\n\r\n"
+                      . "Terus tingkatkan pembelian anda untuk menjadi PLATINUM RESELLER. Untuk informasi yang berkaitan dengan reseller, silahkan klik: http://www.koreanluxury.com/reseller \r\n\r\n"
+                      . "Jika BELUM PERNAH melakukan pendaftaran reseller via email, mohon segera lakukan pendaftaran untuk mendapatkan pricelist reseller, dan info-info lainnya. Kirim email ke: yeppeneshop@gmail.com \r\n\r\n"
+                      . "Subject: pendaftaran reseller langsung\r\n"
+                      . "Isi email:\r\n\r\n"
+                      . "username: (tulis email jika pendaftaran melalui facebook)\r\n"
+                      . "Nama lengkap OWNER:\r\n"
+                      . "Nama OLSHOP:\r\n"
+                      . "Nomer handphone:\r\n"
+                      . "Line ID:\r\n"
+                      . "Instagram:\r\n\r\n"
+                      . "Best Regards,\r\n"
+                      . "www.koreanluxury.com\r\n";
+              break;
+            case 2:
+              $subject = 'Selamat!! kamu sudah menjadi SILVER Reseller';
+              $email_message = "SELAMAT!!!!\r\n\r\n"
+                      . "Karena sudah mencapai target pembelian, Anda telah menjadi SILVER reseller. Harga yang tertera di http://www.koreanluxury.com akan lebih murah dari harga sebelumnya..\r\n\r\n"
+                      . "Terus tingkatkan pembelian anda untuk menjadi GOLD RESELLER. Untuk informasi yang berkaitan dengan reseller, silahkan klik: http://www.koreanluxury.com/reseller \r\n\r\n"
+                      . "Jika BELUM PERNAH melakukan pendaftaran reseller via email, mohon segera lakukan pendaftaran untuk mendapatkan pricelist reseller, dan info-info lainnya. Kirim email ke: yeppeneshop@gmail.com \r\n\r\n"
+                      . "Subject: pendaftaran reseller langsung\r\n"
+                      . "Isi email:\r\n\r\n"
+                      . "username: (tulis email jika pendaftaran melalui facebook)\r\n"
+                      . "Nama lengkap OWNER:\r\n"
+                      . "Nama OLSHOP:\r\n"
+                      . "Nomer handphone:\r\n"
+                      . "Line ID:\r\n"
+                      . "Instagram:\r\n\r\n"
+                      . "Best Regards,\r\n"
+                      . "www.koreanluxury.com\r\n";
+              break;
+            default:
+              break;
+          }
+
+        }
+        if(strlen($subject) > 0) {
+          $usersetting->status_upgrade_date = \Carbon\Carbon::now()->toDateString();
+          $usersetting->save();
+
+          UserFunction::processOrderheader($upgrade_days, $user->id);
+          OrderFunction::sendEmail($email_message, $subject, $user->usersetting->email);
+        }
+      }
+
+
+      //DOWNGRADE
+      $subject = "";
+      $email_message = "";
+      if($downgrade_days > 0) {
+        $grand_total = UserFunction::getShopValue($downgrade_days, false, $user->id);
+
+        if($grand_total <= $downgrade_nominal) {
+          //update user status downgrade
+          $usersetting->status_id = $status_downgrade;
+
+          switch ($status_downgrade) {
+            case 1:
+              $subject = 'Maaf status SILVER kamu sudah BERAKHIR';
+              $email_message = "Hello, karena sudah 1 bulan kamu tidak melakukan order maka status SILVER kamu sudah BERAKHIR..\r\n"
+                      . "Sekarang harga yang tertera di www.koreanluxury.com adalah harga NORMAL..\r\n"
+                      . "Untuk informasi yang berkaitan dengan reseller, silahkan klik: http://www.koreanluxury.com/reseller \r\n\r\n"
+                      . "Best Regards,\r\n"
+                      . "www.koreanluxury.com\r\n";
+              break;
+            case 2:
+              $subject = 'Maaf status GOLD kamu sudah BERAKHIR';
+              $email_message = "Hello, karena tidak mencapai target pembelian, maka status GOLD kamu sudah BERAKHIR..\r\n\r\n"
+                      . "Status kamu sekarang adalah SILVER..\r\n\r\n"
+                      . "Jika kamu tidak melakukan pembelian apapun selama 1 bulan kedepan, maka status SILVER kamu pun akan berakhir..\r\n\r\n"
+                      . "Untuk informasi yang berkaitan dengan reseller, silahkan klik: http://www.koreanluxury.com/reseller \r\n\r\n"
+                      . "Best Regards,\r\n"
+                      . "www.koreanluxury.com\r\n";
+              break;
+            case 3:
+              $subject = 'Maaf status PLATINUM kamu sudah BERAKHIR';
+              $email_message = "Hello, karena tidak mencapai target pembelian, maka status PLATINUM kamu sudah BERAKHIR..\r\n\r\n"
+                      . "Status kamu sekarang adalah GOLD..\r\n\r\n"
+                      . "Jika kamu tidak melakukan pembelian apapun selama 1 bulan kedepan, maka status GOLD kamu pun akan berakhir..\r\n\r\n"
+                      . "Untuk informasi yang berkaitan dengan reseller, silahkan klik: http://www.koreanluxury.com/reseller \r\n\r\n"
+                      . "Best Regards,\r\n"
+                      . "www.koreanluxury.com\r\n";
+              break;
+            default:
+              break;
+          }
+        }
+
+        if (strlen($subject) > 0) {
+          $usersetting->save();
+
+          OrderFunction::sendEmail($email_message, $subject, $user->usersetting->email);
+        }
+      }
+    }
+
+    private function processResellerBU($user) {
         $usersetting = $user->usersetting;
-        
+
         if($usersetting){
             if($usersetting->status_id < 4){
-                \App\Http\Controllers\Custom\UserFunction::upgradeUserStatus();
+                UserFunction::upgradeUserStatus();
             }
 
             if ($user->id != 6830) {
@@ -249,23 +426,23 @@ class AuthController extends Controller
                 if ($usersetting) {
                     #skip downgrade dulu = 26 July 2017
                     #aktifin tanggal 25 Aug 2017
-                    \App\Http\Controllers\Custom\UserFunction::downgradeUserStatus();
+                    UserFunction::downgradeUserStatus();
                 }
             }
         }
     }
-    
+
     private function processCurrentPrice(){
-        
+
         //cek apakah terakhir diupdate itu kemarin
         $priceprocess = Priceprocess::where('id', '=', 1)
                 ->where('last_process_date', '<', \Carbon\Carbon::now()->toDateString())
                 ->first();
-        
+
         if($priceprocess){
-            
+
             $today = \Carbon\Carbon::today()->toDateString();
-            
+
             //proses harga dengan harga baru
             $products = Product::where('qty', '>', 0)->get();
             foreach($products as $product){
@@ -273,15 +450,15 @@ class AuthController extends Controller
                 $product->last_price_update = $today;
                 $product->save();
             }
-            
+
             //update tanggal update harga
             $priceprocess->last_process_date = $today;
             $priceprocess->save();
-            
+
         }
-        
+
     }
-    
+
     //update stok dari produk paket (set)
     private function updateProductSetQty() {
         $productsets = Product::where('is_set', '=', 1)->get();

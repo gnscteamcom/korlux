@@ -47,8 +47,8 @@
         .sidenav {padding-top: 15px;}
         .sidenav a {font-size: 18px;}
     }
-    
-    
+
+
     /* FIXED HEADER*/
     .fixed-header {
         position: fixed; /* Set the navbar to fixed position */
@@ -60,7 +60,7 @@
 </style>
 <header class="header">
     <div class="topbar fix-header hidden-xs">
-        <div class="container"> 
+        <div class="container">
             <div class="topbar__content row">
                 <div class="col-sm-1 hidden-xs">
                     <div class="topbar__search input-group">
@@ -100,7 +100,7 @@
                 <div class="col-sm-1 hidden-xs pull-right">
                     <div class="topbar__search input-group">
                         <span class="input-group-btn">
-                            <a href="{{ url('logout') }}" type="button" class="btn btn-default"><i class="fa fa-sign-out"></i></a>
+                            <a href="{{ url('logout') }}" type="button" class="btn btn-default"><i class="fa fa-sign-out-alt"></i></a>
                         </span>
                     </div>
                 </div>
@@ -139,7 +139,7 @@
             </div>
         </div>
     </div>
-    
+
     <?php
         $brands = App\Brand::orderBy('brand')
                 ->select('id', 'brand', 'initial')
@@ -149,7 +149,7 @@
         $external_links = \App\Externallink::orderBy('name')->get();
     ?>
     <div id="side-nav" class="sidenav" style="font-weight: bolder;">
-        <a href="#" id="menu-close-float" class="pull-right"><i class="fa fa-fw fa-close"></i></a>
+        <a href="#" id="menu-close-float" class="pull-right"><i class="fa fa-fw fa-times"></i></a>
         <a href="{{ URL::to('products') }}">Produk</a>
         <a href="{{ URL::to('stock') }}">Stok</a>
         <a href="{{ URL::to('howto') }}">Cara Belanja</a>
@@ -165,14 +165,14 @@
         <a href="{{ URL::to('login') }}">Login / Registrasi</a>
         @endif
         <hr>
-        
+
         @if(auth()->check())
         @if(auth()->user()->usersetting->status_id > 1)
         <a href="{{ url('pricelist') }}"><b>PRICE LIST</b></a>
         <hr>
         @endif
         @endif
-        
+
         <a href="{{ url('show/0/0/0/0/sale') }}">SALE</a>
         <a href="{{ url('show/0/0/0/0/paket') }}">PAKET</a>
         <hr>
@@ -214,7 +214,7 @@
         <a href="#">{!! $contact->info !!}</a>
         @endif
     </div>
-    
+
 </header>
 
 <script>
@@ -240,5 +240,5 @@
             window.location.replace(url);
         }
     }
-    
+
 </script>

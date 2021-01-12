@@ -4,7 +4,7 @@
 @section('content')
 
 <div class="container-fluid cart-list">
-    
+
     @if(Session::has('msg'))
     <div class="col-md-offset-3 col-md-6 text-center">
         <div class="alert alert-success" role="alert">
@@ -15,7 +15,7 @@
     @endif
 
     <div class="container">
-        <div class="row"> 
+        <div class="row">
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-sm-6 col-sm-offset-3">
@@ -49,7 +49,7 @@
 
                             @foreach($orders as $order)
 
-                                    
+
                             @if($order->status_id == 11)
                             <tr class="info">
                             @elseif($order->status_id == 14)
@@ -84,14 +84,14 @@
                                     @if($order->status_id == 11)
                                     <a href="{{ URL::to('paymentconfirmation') }}" title="Payment Confirmation"><i class="fa fa-2x fa-fw fa-upload"></i></a>
                                     @endif
-                                    <a href="{{ URL::to('orderdetail/' . $order->id) }}" title="Detil Pesanan"><i class="glyphicon glyphicon-list"></i></a>
+                                    <a href="{{ URL::to('orderdetail/' . $order->id) }}" title="Detil Pesanan"><i class="fa fa-list"></i></a>
                                 </td>
                             </tr>
                             @endforeach
                         @endif
                     </tbody>
                 </table>
-                
+
                 {!! $orders->links() !!}
             </div>
         </div>

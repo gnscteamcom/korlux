@@ -37,7 +37,7 @@
                         $weight = $cart->options->weight * $cart->qty;
                         $total_weight += $weight;
                     ?>
-                    <tr> 
+                    <tr>
                         <input type="hidden" value="{{ $cart->id }}" name="product_id[]"/>
                         <input type="hidden" value="{{ $cart->price }}" name="price[]"/>
                         <input type="hidden" value="{{ $cart->rowid }}" name="cart_rowid[]"/>
@@ -53,10 +53,10 @@
                       <td>{!! 'Rp. ' . number_format($cart->price, 0, ',', '.') !!}</td>
                       <td>{!! number_format($weight, 0, ',', '.') !!}</td>
                       <td>{!! 'Rp. ' . number_format($cart->price * $cart->qty, 0, ',', '.') !!}</td>
-                      <td><a href="{{ URL::to('removecartitem/' . $cart->rowid) }}"><i class="fa fa-trash-o"></i></a></td>
+                      <td><a href="{{ URL::to('removecartitem/' . $cart->rowid) }}"><i class="fa fa-trash-alt"></i></a></td>
                     </tr>
                     @endforeach
-                    <tr class=""> 
+                    <tr class="">
                         <td colspan="2"></td>
                         <td colspan="2">
                             <strong>Total</strong>
@@ -72,9 +72,9 @@
               <div class="pull-left"><a href="{{ URL::to('home') }}" class="btn btn-default"><i class="fa fa-chevron-left"></i> Lanjut Belanja</a></div>
               <div class="pull-right">
                   <a href="{{ url('refreshcart') }}">
-                      <button type="button" class="btn btn-default">Kosongkan <i class="fa fa-trash-o"></i></button>
+                      <button type="button" class="btn btn-default">Kosongkan <i class="fa fa-trash"></i></button>
                   </a>
-                  <button type="submit" class="btn btn-default"><i class="fa fa-refresh"></i> Ubah Qty</button>
+                  <button type="submit" class="btn btn-default"><i class="fa fa-redo-alt"></i> Ubah Qty</button>
                   @if(Cart::total() > 0)
                   <a href="{{ URL::to('checkout') }}">
                       <button type="button" class="btn btn-primary">Checkout <i class="fa fa-chevron-right"></i></button>
