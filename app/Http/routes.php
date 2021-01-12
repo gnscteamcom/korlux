@@ -446,6 +446,13 @@ Route::group(['middleware' => ['web']], function () {
             Route::get('shipmethod/delete/{id}', 'ShipmentMethodController@deleteMethods');
             Route::post('shipmethod/activate', 'ShipmentMethodController@activateMethod');
 
+
+            ################################
+            #RESELLER CONFIGS
+            ################################
+            Route::get('resellerconfig', 'ResellerConfigController@viewResellerConfig');
+            Route::post('resellerconfig', 'ResellerConfigController@updateResellerConfig');
+
         });
 
 

@@ -13,7 +13,7 @@ class MenuTableSeeder extends Seeder
     public function run()
     {
         Menu::truncate();
-        
+
         $data = [
             [
                 'menu' => 'Konfigurasi',
@@ -24,13 +24,13 @@ class MenuTableSeeder extends Seeder
             [
                 'menu' => 'Ekspor Data',
                 'menu_link' => 'viewexportlist',
-                'menu_icon' => 'area-chart',
+                'menu_icon' => 'chart-line',
                 'position' => 2,
             ],
             [
                 'menu' => 'Harga & Diskon',
                 'menu_link' => '#',
-                'menu_icon' => 'money',
+                'menu_icon' => 'money-bill-wave',
                 'position' => 3,
             ],
             [
@@ -60,7 +60,7 @@ class MenuTableSeeder extends Seeder
             [
                 'menu' => 'Pembayaran',
                 'menu_link' => 'viewpayment',
-                'menu_icon' => 'dollar',
+                'menu_icon' => 'money-bill-alt',
                 'position' => 8,
             ],
             [
@@ -84,19 +84,19 @@ class MenuTableSeeder extends Seeder
             [
                 'menu' => 'Konfirmasi Pembayaran',
                 'menu_link' => 'paymentconfirmationadmin',
-                'menu_icon' => 'money',
+                'menu_icon' => 'file-invoice',
                 'position' => 12,
             ],
             [
                 'menu' => 'Stok',
                 'menu_link' => '#',
-                'menu_icon' => 'exchange',
+                'menu_icon' => 'exchange-alt',
                 'position' => 13,
             ],
             [
                 'menu' => 'Revisi Order',
                 'menu_link' => 'viewreviseorder',
-                'menu_icon' => 'pencil',
+                'menu_icon' => 'pencil-alt',
                 'position' => 14,
             ],
             [
