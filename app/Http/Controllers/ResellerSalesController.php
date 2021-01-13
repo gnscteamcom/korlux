@@ -149,6 +149,7 @@ class ResellerSalesController extends Controller {
                 ))[0];
 
         $cart_data = Cart::instance('resellersalesdata')->get($data_rowid);
+        $reseller_email = $cart_data->options->email_reseller;
         $user_id = auth()->user()->id;
         $total_weight = $request['total_weight'];
 
@@ -373,6 +374,11 @@ class ResellerSalesController extends Controller {
                             . "Mohon lakukan konfirmasi pembayaran dalam 24 jam, atau orderan kakak akan batal otomatis dan barang yang kakak pesan tidak terjamin ketersediaannya.<br>";
                 }
             }
+
+
+            // Kirim email pesanan ini ke reseller
+            OrderFunction::newOrderEmail($reseller_email, $order_header->id);
+
 
             return redirect($link)
                             ->with([
