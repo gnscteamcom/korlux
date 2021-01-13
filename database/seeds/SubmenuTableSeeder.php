@@ -274,6 +274,13 @@ class SubmenuTableSeeder extends Seeder
                 'submenu_icon' => '',
                 'position' => 8
             ],
+            [
+                'menu_id' => 7,
+                'submenu' => 'Penjualan Reseller',
+                'submenu_link' => 'resellersales',
+                'submenu_icon' => '',
+                'position' => 6
+            ],
         ];
 
         Submenu::insert($data);

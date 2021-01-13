@@ -363,6 +363,18 @@ Route::group(['middleware' => ['web']], function () {
             //Bagian Histori Manual Sales
             Route::get('manualsaleshistory', 'ManualSalesController@viewManualSalesHistory');
 
+
+            ##################
+            #RESELLER SALES
+            ##################
+            Route::get('resellersales', 'ResellerSalesController@viewResellerSales');
+            Route::post('resellersales', 'ResellerSalesController@processResellerSales');
+            Route::get('resellersales2', 'ResellerSalesController@viewResellerSales2');
+            Route::post('submitresellersales', 'ResellerSalesController@submitResellerSales');
+            Route::get('resellersales/addreseller', 'ResellerSalesController@addReseller');
+            Route::post('resellersales/addreseller', 'ResellerSalesController@insertReseller');
+
+
             #Bagian untuk proses order
             Route::get('viewprocessorder', 'OrderController@viewProcess');
             Route::post('order/process', 'OrderController@processOrder');
@@ -549,6 +561,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('api/getaddfromdata', 'AjaxController@getAddFromData');
     Route::post('api/addmanualsales', 'ManualSalesController@addManualSales');
     Route::post('api/removemanualsales', 'ManualSalesController@removeManualSales');
+    Route::post('api/destroymanualsales', 'ManualSalesController@destroyManualSales');
     Route::post('api/addproductset', 'ProductSetController@addProduct');
 
     Route::post('api/cancelexpiredorder', 'AjaxController@cancelExpiredOrder');

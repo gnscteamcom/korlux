@@ -29,7 +29,7 @@ $('#kecamatan').change(function () {
 });
 
 $('#ship_method').change(function () {
-    
+
     $('#ship_method_text').val($('#ship_method option:selected').text());
 
     var kec_value = $('#kecamatan').val();
@@ -51,7 +51,10 @@ $('#ship_method').change(function () {
                     }
 
                     var ongkir = parseFloat(shipcost);
-                    $('#biaya_kirim_text').val("Rp. " + ongkir.toLocaleString());
+                    let total_weight = $('#total_weight').val()
+                    let total_biaya_kirim = ongkir * parseInt(total_weight / 1000 + 1, 10)
+                    $("#total_biaya_kirim").val(total_biaya_kirim)
+                    $('#biaya_kirim_text').val("Rp. " + total_biaya_kirim.toLocaleString());
                     $('#biaya_kirim').val(shipcost);
 
                 }
@@ -83,6 +86,7 @@ function addProduct(product, qty) {
             qty: qty,
             user_id:$('#user_id').val(),
             gunakan_stok:$('#gunakan_stok').val(),
+            status_id: $('#status_id').val(),
             _token: token
         },
         function (data) {
@@ -90,8 +94,9 @@ function addProduct(product, qty) {
 
             $('#product_list').empty();
             var html = '';
+            let total_weight = 0;
             $.each(data.data, function(key, element){
-                html = html 
+                html = html
                         + '<tr id=' + element.rowid + '>'
                         + '<td>'
                         + element.product_name
@@ -103,12 +108,22 @@ function addProduct(product, qty) {
                         + element.qty
                         + '</td>'
                         + '<td>'
-                        + '<button type="button" class="deleteRow" data-row-id="' + element.rowid + '"><i class="fa fa-fw fa-close"></i></button>'
+                        + '<button type="button" class="deleteRow" data-row-id="' + element.rowid + '"><i class="fa fa-fw fa-times"></i></button>'
                         + '</td>'
                         + '</tr>';
+                total_weight += parseInt(element.weight, 10) * parseInt(element.qty, 10);
             });
             $('#product_list').append(html);
-            
+
+            //calculate total shipment cost
+            $('#total_weight').val(total_weight)
+            let biaya_kirim = $('#biaya_kirim').val()
+            if(biaya_kirim) {
+              let total_biaya_kirim = biaya_kirim * parseInt(total_weight / 1000 + 1, 10)
+              $("#total_biaya_kirim").val(total_biaya_kirim)
+              $('#biaya_kirim_text').val(`Rp. ${total_biaya_kirim.toLocaleString()}`)
+            }
+
             $('.deleteRow').click(function(){
                 $.post(
                     "/api/removemanualsales",
@@ -117,10 +132,22 @@ function addProduct(product, qty) {
                         _token: token
                     },
                     function (data) {
-                        $('#' + data).remove();
+                      data = JSON.parse(data)
+
+                      $('#' + data.rowid).remove();
+
+                      let biaya_kirim_rem = $('#biaya_kirim').val()
+                      let total_weight_rem = data.total_weight
+                      $('#total_weight').val(total_weight_rem)
+
+                      if(biaya_kirim_rem) {
+                        let total_biaya_kirim_rem = biaya_kirim_rem * parseInt(total_weight_rem / 1000 + 1, 10)
+                        $("#total_biaya_kirim").val(total_biaya_kirim_rem)
+                        $('#biaya_kirim_text').val(`Rp. ${total_biaya_kirim_rem.toLocaleString()}`)
+                      }
                 });
             });
+
         }
     );
 }
-
