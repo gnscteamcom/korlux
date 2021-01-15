@@ -105,6 +105,12 @@ class MenuTableSeeder extends Seeder
                 'menu_icon' => 'truck',
                 'position' => 15,
             ],
+            [
+                'menu' => 'Jastip',
+                'menu_link' => '#',
+                'menu_icon' => 'shopping-bag',
+                'position' => 16,
+            ],
         ];
 
         Menu::insert($data);

@@ -55,13 +55,13 @@
                             ->groupBy('menus.id')
                             ->get();
                 ?>
-                
+
                 <li>
                     <a class="active" href="{{ url('home') }}" target="_blank"><i class="fa fa-home fa-fw"></i> Home</a>
                 </li>
                 @foreach($menus as $menu)
                 <li>
-                    <a href="{{ url($menu->menu_link) }}"><i class="fa fa-{{ $menu->menu_icon }} fa-fw"></i> {{ $menu->menu }} 
+                    <a href="{{ url($menu->menu_link) }}"><i class="fa fa-{{ $menu->menu_icon }} fa-fw"></i> {{ $menu->menu }}
                         @if($menu->submenus->count() > 0)
                         <span class="fa arrow"></span>
                         @endif
@@ -74,6 +74,7 @@
                                     ->where('usermenus.user_id', '=', auth()->user()->id)
                                     ->where('usermenus.menu_id', '=', $menu->id)
                                     ->select('submenus.id', 'submenus.submenu', 'submenus.submenu_link')
+                                    ->orderBy('submenus.position')
                                     ->get();
                         ?>
                         @foreach($submenus as $submenu)
@@ -105,4 +106,4 @@
             </ul>
         </div>
     </div>
-</nav>       
+</nav>
