@@ -9,7 +9,7 @@
 
 @section('content')
 
-    
+
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">Produk Merk {{ $brand_name }}</h1>
@@ -39,8 +39,8 @@
         </div>
     </div>
     @endif
-        
-        
+
+
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-info">
@@ -62,10 +62,10 @@
                                 </div>
                             </form>
                         </div>
-                        
+
                         <form method="post" action="" id="bulkForm">
                             {!! csrf_field(); !!}
-                            
+
                             <div class="col-md-12 margin-bottom-20">
                                 <div class="col-md-6">
                                     <input class="col-md-12 btn btn-primary" type="button" value="Update yang dicentang" onclick="submitForm(1)"/>
@@ -92,7 +92,7 @@
                                 </thead>
 
                                 <tbody>
-                                    <?php 
+                                    <?php
                                         $i = 1;
                                     ?>
                                     @foreach($products as $product)
@@ -101,7 +101,7 @@
                                         <td><input type="checkbox" name="product_id[]" value="{{ $product->id }}"></td>
                                         <td>
                                             @if($product->qty == 0)
-                                            <a href="#"><i class="fa fa-trash-o fa-fw fa-2x" data-toggle="modal" data-target="<?php echo '#myModal' . $product->id ?>"></i></a>
+                                            <a href="#"><i class="fa fa-trash-alt fa-2x" data-toggle="modal" data-target="<?php echo '#myModal' . $product->id ?>"></i></a>
                                             <div class="modal fade" id="<?php echo 'myModal' . $product->id ?>" tabindex="-1" role="dialog" aria-labelledby="<?php echo 'myModalLabel' . $product->id ?>" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
@@ -121,7 +121,7 @@
                                             </div>
                                             @endif
 
-                                            <a href="{{ URL::to('editproduct/' . $product->id) }}"><i class="fa fa-pencil fa-fw fa-2x"></i></a>
+                                            <a href="{{ URL::to('editproduct/' . $product->id) }}"><i class="fa fa-pencil-alt fa-2x"></i></a>
                                         </td>
                                         <td>
                                             {{ $product->barcode }}
@@ -146,7 +146,7 @@
                             </table>
 
                         </form>
-                        
+
                     </div>
                 </div>
             </div>
@@ -159,14 +159,14 @@
 @section('script')
 <script>
     function submitForm(action){
-        
+
         switch(action){
             case 1: $('#bulkForm').attr('action', "{{ URL::to('viewbulkupdateproduct') }}").submit();
                     break;
             case 2: $('#bulkForm').attr('action', "{{ URL::to('bulkdeleteproduct') }}").submit();
                     break;
         }
-        
+
     }
 </script>
 @stop

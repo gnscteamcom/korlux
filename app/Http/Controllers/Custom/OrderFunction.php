@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Custom;
 use Mail;
 use App\Orderheader;
 use App\Bank;
+use App\Jastip;
 use App\Product;
 use App\Productclass;
 use Cart;
@@ -25,6 +26,21 @@ class OrderFunction {
 
         return 'K' . $inisial . $invoice_number_start . $invoice_number_end . ($orderheader_count+1);
 
+    }
+
+    public static function jastipInvoiceNumber($inisial = "#") {
+      $invoice_number_start = date('y') . date('m') . date('d') . '-';
+      $invoice_number_end = '';
+
+      $jastip_count = Jastip::where('created_at', '>=' , \Carbon\Carbon::today() )
+      ->where('created_at', '<=', \Carbon\Carbon::tomorrow())
+      ->count();
+
+      for($i = strlen($jastip_count+1); $i < 3; $i++){
+        $invoice_number_end .= '0';
+      }
+
+      return 'J' . $inisial . $invoice_number_start . $invoice_number_end . ($jastip_count+1);
     }
 
     public static function setBarcode($invoicenumber){

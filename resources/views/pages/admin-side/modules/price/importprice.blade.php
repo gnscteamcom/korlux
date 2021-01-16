@@ -8,7 +8,7 @@
 
 
 @section('content')
-    
+
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">Import Data Harga</h1>
@@ -50,10 +50,10 @@
                     Pilih file untuk diimport
                 </div>
                 <div class="panel-body">
-                    
+
                     <form method="post" action="{{ URL::to('importprice') }}" enctype="multipart/form-data" class="form-horizontal">
                         {!! csrf_field() !!}
-                                            
+
                         @if(Session::has('err'))
                         <div class="form-group">
                             <div class="col-sm-10 col-sm-offset-2">
@@ -94,13 +94,13 @@
                                 <input type="submit" class="btn btn-default btn-success btn-block" value="Import" />
                             </div>
                         </div>
-                        
+
                     </form>
                 </div>
             </div>
         </div>
     </div>
-        
+
 
 
     @if(Session::has('msg'))
@@ -115,9 +115,9 @@
         </div>
     </div>
     @endif
-        
-        
-        
+
+
+
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-info">
@@ -143,7 +143,7 @@
 
                         <form method="post" action="{{ url('deleteprice/bulk') }}">
                             {!! csrf_field(); !!}
-                        
+
                             <div class="row form-group">
                                 <input type="submit" value="Hapus yang Dipilih" class="btn btn-block btn-success"/>
                             </div>
@@ -153,7 +153,7 @@
                                 </div>
                             </div>
 
-                            
+
                             <table class="table table-striped table-bordered table-hover">
                                 <thead>
                                     <tr>
@@ -169,7 +169,7 @@
                                 </thead>
 
                                 <tbody>
-                                    <?php 
+                                    <?php
                                         $i = 1;
                                     ?>
                                     @foreach($prices as $price)
@@ -181,9 +181,9 @@
                                             <input type="checkbox" name="price[]" value="{{ $price->id }}" style="transform: scale(1.5);"/>
                                         </td>
                                         <td>
-                                            <a href="{{ URL::to('editprice/' . $price->id) }}"><i class="fa fa-pencil fa-fw fa-2x"></i></a>
+                                            <a href="{{ URL::to('editprice/' . $price->id) }}"><i class="fa fa-pencil-alt fa-2x"></i></a>
 
-                                            <a href="#"><i class="fa fa-trash-o fa-fw fa-2x" data-toggle="modal" data-target="<?php echo '#myModal' . $price->id ?>"></i></a>
+                                            <a href="#"><i class="fa fa-trash-alt fa-2x" data-toggle="modal" data-target="<?php echo '#myModal' . $price->id ?>"></i></a>
                                             <div class="modal fade" id="<?php echo 'myModal' . $price->id ?>" tabindex="-1" role="dialog" aria-labelledby="<?php echo 'myModalLabel' . $price->id ?>" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
@@ -230,9 +230,9 @@
                 </div>
             </div>
         </div>
-    </div>        
-        
-        
+    </div>
+
+
 </div>
 
 @stop

@@ -465,6 +465,13 @@ Route::group(['middleware' => ['web']], function () {
             Route::get('resellerconfig', 'ResellerConfigController@viewResellerConfig');
             Route::post('resellerconfig', 'ResellerConfigController@updateResellerConfig');
 
+
+            ################################
+            #JASTIP
+            ################################
+            Route::get('jastip/add', 'JastipController@addJastip');
+            Route::post('jastip/add', 'JastipController@insertJastip');
+
         });
 
 
