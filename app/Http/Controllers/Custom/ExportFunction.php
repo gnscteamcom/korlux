@@ -745,7 +745,7 @@ class ExportFunction {
                     \Carbon\Carbon::now()->toDateTimeString()
                 ));
 
-                $sheet->cell('A4:F4', function($cells){
+                $sheet->cell('A4:H4', function($cells){
                     $cells->setBackground('#00B0F0');
                     $cells->setFontSize(16);
                     $cells->setFontWeight('bold');
@@ -754,20 +754,20 @@ class ExportFunction {
                 });
 
                 $sheet->row(4, array(
-                    'Nama Produk', 'Reguler', 'Silver', 'Gold', 'Platinum', 'Sale'
+                   'Produk ID',  'Nama Produk', 'Qty', 'Reguler', 'Silver', 'Gold', 'Platinum', 'Sale'
                 ));
 
                 $products = Product::join('prices', 'prices.id', '=', 'products.currentprice_id')
                         ->orderBy('products.product_name')
-                        ->select('products.product_name', 'prices.regular_price', 'prices.reseller_1', 'prices.reseller_2',
-                                'prices.vvip', 'prices.sale_price')
+                        ->select('products.id', 'products.product_name', 'prices.regular_price', 'prices.reseller_1', 'prices.reseller_2',
+                                'prices.vvip', 'prices.sale_price', 'products.qty')
                         ->get();
                 $i = 5;
 
                 foreach($products as $product) {
                     $sheet->row($i++, array(
-                        $product->product_name, $product->regular_price, $product->reseller_1, $product->reseller_2,
-                        $product->vvip, $product->sale_price
+                        $product->id, $product->product_name, $product->qty, $product->regular_price,
+                        $product->reseller_1, $product->reseller_2, $product->vvip, $product->sale_price
                     ));
                 }
 
