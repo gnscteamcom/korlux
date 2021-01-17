@@ -297,31 +297,24 @@ class SubmenuTableSeeder extends Seeder
             ],
             [
                 'menu_id' => 16,
-                'submenu' => 'Jastip Sudah Beli',
-                'submenu_link' => 'jastip/boughtlist',
-                'submenu_icon' => '',
-                'position' => 3
-            ],
-            [
-                'menu_id' => 16,
                 'submenu' => 'Jastip Belum Lunas',
                 'submenu_link' => 'jastip/dplist',
                 'submenu_icon' => '',
-                'position' => 4
+                'position' => 3
             ],
             [
                 'menu_id' => 16,
                 'submenu' => 'Jastip Siap Kirim',
                 'submenu_link' => 'jastip/shiplist',
                 'submenu_icon' => '',
-                'position' => 5
+                'position' => 4
             ],
             [
                 'menu_id' => 16,
                 'submenu' => 'Jastip Selesai',
                 'submenu_link' => 'jastip/donelist',
                 'submenu_icon' => '',
-                'position' => 6
+                'position' => 5
             ],
         ];
 

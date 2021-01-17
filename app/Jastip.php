@@ -12,7 +12,7 @@ class Jastip extends Model
     protected $table = 'jastips';
 
     public function jastipdetails() {
-      return $this->hasMany('App\Jastipdetail');
+      return $this->hasMany('App\Jastipdetail')->orderBy('product_name', 'asc');
     }
 
     public function user() {

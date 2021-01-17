@@ -17,8 +17,10 @@ CREATE TABLE `jastips` (
   `customeraddress_id` int(10) NOT NULL,
   `payment_date` date NULL DEFAULT NULL,
   `shipment_date` date NULL DEFAULT NULL,
+  `ordered_date` date NULL DEFAULT NULL,
   `is_lunas` tinyint(4) NOT NULL DEFAULT 0,
   `has_ordered` tinyint(4) NOT NULL DEFAULT 0,
+  `ordered_by` int(10) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL

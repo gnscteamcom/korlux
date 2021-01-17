@@ -68,6 +68,9 @@ class JastipController extends Controller {
     $jastip->total_dp = $request->total_payment;
     $jastip->total_pelunasan = $request->total_pelunasan;
     $jastip->total_paid = $jastip->total_dp + $jastip->total_pelunasan;
+    if($jastip->total_pelunasan == 0) {
+      $jastip->payment_date = \Carbon\Carbon::now();
+    }
     $jastip->save();
 
     //save detailsnya
@@ -101,6 +104,27 @@ class JastipController extends Controller {
 
     return back()->with([
       'msg' => $message
+    ]);
+  }
+
+  public function jastipHarusBeli() {
+    $jastips = Jastip::where('has_ordered', '=', 0)
+    ->get();
+
+    return view('pages.admin-side.modules.jastips.jastipharusbeli')->with([
+      'jastips' => $jastips
+    ]);
+  }
+
+  public function jastipBuyNow($id) {
+    $jastip = Jastip::find($id);
+    $jastip->has_ordered = 1;
+    $jastip->ordered_date = \Carbon\Carbon::now();
+    $jastip->ordered_by = auth()->user()->id;
+    $jastip->save();
+
+    return back()->with([
+      'msg' => 'Jastip ' . $jastip->invoicenumber . ' sudah dicentang untuk dibeli.'
     ]);
   }
 
