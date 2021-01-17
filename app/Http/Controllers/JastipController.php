@@ -70,6 +70,8 @@ class JastipController extends Controller {
     $jastip->total_paid = $jastip->total_dp + $jastip->total_pelunasan;
     if($jastip->total_pelunasan == 0) {
       $jastip->payment_date = \Carbon\Carbon::now();
+      $jastip->is_lunas = 1;
+      $jastip->lunas_by = $jastip->user_id;
     }
     $jastip->save();
 
@@ -125,6 +127,28 @@ class JastipController extends Controller {
 
     return back()->with([
       'msg' => 'Jastip ' . $jastip->invoicenumber . ' sudah dicentang untuk dibeli.'
+    ]);
+  }
+
+  public function jastipBelumLunas() {
+    $jastips = Jastip::where('has_ordered', '=', 1)
+    ->where('is_lunas', '=', 0)
+    ->get();
+
+    return view('pages.admin-side.modules.jastips.jastipbelumlunas')->with([
+      'jastips' => $jastips
+    ]);
+  }
+
+  public function jastipLunasNow($id) {
+    $jastip = Jastip::find($id);
+    $jastip->payment_date = \Carbon\Carbon::now();
+    $jastip->is_lunas = 1;
+    $jastip->lunas_by = auth()->user()->id;
+    $jastip->save();
+
+    return back()->with([
+      'msg' => 'Jastip ' . $jastip->invoicenumber . ' sudah dicentang sebagai tanda LUNAS.'
     ]);
   }
 

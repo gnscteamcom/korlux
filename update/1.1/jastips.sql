@@ -21,6 +21,7 @@ CREATE TABLE `jastips` (
   `is_lunas` tinyint(4) NOT NULL DEFAULT 0,
   `has_ordered` tinyint(4) NOT NULL DEFAULT 0,
   `ordered_by` int(10) NOT NULL DEFAULT 0,
+  `lunas_by` int(10) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
