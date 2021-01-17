@@ -7,6 +7,7 @@ CREATE TABLE `jastips` (
   `id` int(10) UNSIGNED NOT NULL,
   `user_id` int(10) NOT NULL,
   `invoicenumber` text NOT NULL,
+  `barcode` text NOT NULL,
   `total_weight` int(10) NOT NULL,
   `shipment_cost` bigint(20) NOT NULL,
   `unique_nominal` int(10) NOT NULL,
@@ -22,6 +23,8 @@ CREATE TABLE `jastips` (
   `has_ordered` tinyint(4) NOT NULL DEFAULT 0,
   `ordered_by` int(10) NOT NULL DEFAULT 0,
   `lunas_by` int(10) NOT NULL DEFAULT 0,
+  `is_print` tinyint(4) NOT NULL DEFAULT 0,
+  `print_by` int(10) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL

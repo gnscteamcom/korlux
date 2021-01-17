@@ -475,6 +475,9 @@ Route::group(['middleware' => ['web']], function () {
             Route::get('jastip/buynow/{id}', 'JastipController@jastipBuyNow');
             Route::get('jastip/dplist', 'JastipController@jastipBelumLunas');
             Route::get('jastip/lunasnow/{id}', 'JastipController@jastipLunasNow');
+            Route::get('jastip/shiplist', 'JastipController@jastipSiapKirim');
+            Route::post('jastip/printdo', 'JastipController@printDO');
+            Route::post('jastip/printalldo', 'JastipController@printAllDO');
 
 
         });
