@@ -37,6 +37,7 @@ class JastipController extends Controller {
       'unique_nominal' => 'required',
       'total_ongkos_kirim' => 'required',
       'total_paid' => 'required',
+      'total_payment' => 'required'
     ]);
 
     $products_list = json_decode($request->products_list);
@@ -63,8 +64,10 @@ class JastipController extends Controller {
     $jastip->shipment_cost = $request->total_ongkos_kirim;
     $jastip->unique_nominal = $request->unique_nominal;
     $jastip->grand_total = $request->grand_total_rp;
-    $jastip->total_paid = $request->total_paid;
     $jastip->customeraddress_id = $customer->id;
+    $jastip->total_dp = $request->total_payment;
+    $jastip->total_pelunasan = $request->total_pelunasan;
+    $jastip->total_paid = $jastip->total_dp + $jastip->total_pelunasan;
     $jastip->save();
 
     //save detailsnya

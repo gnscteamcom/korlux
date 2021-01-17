@@ -231,9 +231,26 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="total_paid_text">Total Pembayaran</label>
+                                    <label for="total_paid_text">Total yang harus dibayar</label>
                                     <input type="hidden" name="total_paid" id="total_paid" value="0"/>
-                                    <input type="text" name="total_paid_text" id="total_paid_text" class="form-control" placeholder="Total Pembayaran" readonly/>
+                                    <input type="text" name="total_paid_text" id="total_paid_text" class="form-control" placeholder="Total yang harus dibayar" readonly/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="total_payment">Total DP / Pembayaran</label>
+                                    <input type="number" name="total_payment" id="total_payment" class="form-control" placeholder="Total DP / Pembayaran" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="total_pelunasan_text">Sisa yang harus dilunasi apabila DP (extra 3%)</label>
+                                    <input type="hidden" name="total_pelunasan" id="total_pelunasan" value="0"/>
+                                    <input type="text" name="total_pelunasan_text" id="total_pelunasan_text" class="form-control" placeholder="Sisa yang harus dilunasi apabila DP" readonly/>
                                 </div>
                             </div>
                         </div>
@@ -262,6 +279,16 @@
 <script>
   $('#total_ongkos_kirim').keyup(function() {
     calculateTotalPaid()
+  })
+
+  $('#total_payment').keyup(function() {
+    let total_payment = $(this).val()
+    let total_paid = $('#total_paid').val()
+    if(parseInt(total_payment, 10) > parseInt(total_paid, 10)) {
+      $(this).val(total_paid)
+    }
+
+    calculateSisaPelunasan()
   })
 
   addProduct = () => {
@@ -408,6 +435,23 @@
 
     $('#total_paid').val(total_paid)
     $('#total_paid_text').val(`Rp. ${total_paid.toLocaleString()}`)
+
+    calculateSisaPelunasan()
+  }
+
+  calculateSisaPelunasan = () => {
+    let total_paid = $('#total_paid').val()
+    let total_dp = $('#total_payment').val()
+    let total_pelunasan = total_paid - total_dp
+
+    if(total_pelunasan < 0) {
+      total_pelunasan = 0
+    } else {
+      total_pelunasan = Math.ceil(total_pelunasan * 1.03)
+    }
+
+    $('#total_pelunasan').val(total_pelunasan)
+    $('#total_pelunasan_text').val(`Rp. ${total_pelunasan.toLocaleString()}`)
   }
 
   $('#copy-btn').click(function(){
