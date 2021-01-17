@@ -37,11 +37,11 @@
             <div class="row">
                 <div class="col-md-8">
                     <a href="{{ URL::to('home') }}">Halaman Utama</a>
-                    :: 
+                    ::
                     <a href="{{ URL::to('about') }}">Tentang Kami</a>
-                    :: 
+                    ::
                     <a href="{{ URL::to('howto') }}">Cara Belanja</a>
-                    :: 
+                    ::
                     <a href="{{ URL::to('reseller') }}">Reseller</a>
                 </div>
             </div>
@@ -56,7 +56,7 @@
             </div>
             <div class="row">
                 <div class="col-md-8">
-                    <p>&copy;2018 Korean Luxury - Powered by <b><a href="https://digitara.id/" target="_blank" style="font-weight: bolder;">Digitara</a></b></p><br>
+                    <p>&copy;2021 Korean Luxury - Powered by <b><a href="https://digitara.id/" target="_blank" style="font-weight: bolder;">Digitara</a></b></p><br>
                 </div>
             </div>
             <div class="row">

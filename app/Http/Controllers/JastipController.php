@@ -9,6 +9,7 @@ use App\Contact;
 use App\Customeraddress;
 use App\Jastip;
 use App\Jastipdetail;
+use DB;
 use PDF;
 
 class JastipController extends Controller {
@@ -144,6 +145,19 @@ class JastipController extends Controller {
 
     return back()->with([
       'msg' => 'Jastip ' . $jastip->invoicenumber . ' sudah dicentang untuk dibeli.'
+    ]);
+  }
+
+  public function daftarKirimIndonesia() {
+    $details = Jastipdetail::join('jastips', 'jastips.id', '=', 'jastipdetails.jastip_id')
+    ->select(DB::raw('sum(jastipdetails.qty) as jumlah, jastipdetails.product_name'))
+    ->where('jastips.has_ordered', '=', 0)
+    ->orderBy('jastipdetails.product_name')
+    ->groupBy('jastipdetails.product_name')
+    ->get();
+
+    return view('pages.admin-side.modules.jastips.daftarkirimindonesia')->with([
+      'details' => $details
     ]);
   }
 
