@@ -89,13 +89,13 @@ class ShipmentKotaController extends Controller {
         Custom\ExportFunction::exportShipmentKota();
     }
 
-    
+
     public function import(Request $request){
-        
+
         $this->validate($request, [
             'file' => 'required'
         ]);
-        
+
         //inisialisasi data
         $file = $request['file'];
         $filesize = $file->getSize(); //hasil dalam satuan bytes..
@@ -124,7 +124,7 @@ class ShipmentKotaController extends Controller {
                     echo '<b style="color:red">Kota Harus Diisi</b><br />';
                 }
                 else{
-                    
+
                     #kalau ada ID artinya update
                     if($row->id){
                         $kota = Kota::find($row->id);
@@ -135,7 +135,7 @@ class ShipmentKotaController extends Controller {
                         #kalau tidak ada ID, artinya buat baru
                         $kota = new Kota;
                     }
-                    
+
                     #kalau ada shipcost
                     if($kota){
                         $kota->kota = $row->kota;
@@ -143,13 +143,13 @@ class ShipmentKotaController extends Controller {
 
                         echo '<b style="color:blue">Berhasil mengubah / menambahkan : ' . $row->kota . '</b><br />';
                     }
-                    
+
                 }
 
             });
 
         });
-        
+
         echo '<br /><a href="' . url()->previous() . '">Kembali</a>';
 
     }

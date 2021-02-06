@@ -214,7 +214,7 @@
                                             @endif
                                             
                                             @if(in_array($order->status_id,[16, 17]))
-                                            <a href="#" title="Kembalikan Order"><i class="fa fa-refresh fa-fw fa-2x" data-toggle="modal" data-target="<?php echo '#myModal' . $order->id ?>"></i></a>
+                                            <a href="#" title="Kembalikan Order"><i class="fa fa-redo-alt fa-fw fa-2x" data-toggle="modal" data-target="<?php echo '#myModal' . $order->id ?>"></i></a>
                                             <div class="modal fade" id="<?php echo 'myModal' . $order->id ?>" tabindex="-1" role="dialog" aria-labelledby="<?php echo 'myModalLabel' . $order->id ?>" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">

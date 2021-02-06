@@ -1,10 +1,10 @@
-/* 
- * 
+/*
+ *
  * Team2One
  * v. 3 Apr 2016
- * 
+ *
  */
-    
+
 $('#kota').blur(function() {
     $.post(
         "http://www.team2one.com/api/getlistkecamatan",
